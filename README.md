@@ -5,9 +5,10 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/Ferrum-Citadel/Mock-Airbnb-REST-API)
 ![David](https://img.shields.io/david/Ferrum-Citadel/Mock-Airbnb-REST-API)
 
-> RESTful API built with node.js, express.js and MongoDB that exposes Airbnb data of Athens in the 2015-2016 time period. It uses JWT tokens encapsulated in cookies for authentication and provides endpoints for different roles (admins, hosts, simple users)
+> **RESTful API built with node.js, express.js and MongoDB that exposes Airbnb data of Athens in the 2015-2016 time period. It uses JWT tokens encapsulated in cookies for authentication and provides endpoints for different roles (admins, hosts, simple users).**
 
-### ✨Live api running on: https://airbnbapi.sidirope.info (Sitting behind Nginx reverse proxy)
+ ## ✨Live demo
+ > https://airbnbapi.sidirope.info (Sitting behind Nginx reverse proxy)
 
 ## Author
 
