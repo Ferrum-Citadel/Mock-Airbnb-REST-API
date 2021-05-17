@@ -64,13 +64,13 @@ const searchRouter = require("./routes/search");
 const hostRouter = require("./routes/host");
 
 //Using endpoints("routes")
-app.use("/api/register", registerRouter);
-app.use("/api/login", loginRouter);
-app.use("/api/logout", logoutRouter);
-app.use("/api/user", userRouter);
-app.use("/api/admin", adminRouter);
-app.use("/api/search", searchRouter);
-app.use("/api/host", hostRouter);
+app.use("/register", registerRouter);
+app.use("/login", loginRouter);
+app.use("/logout", logoutRouter);
+app.use("/user", userRouter);
+app.use("/admin", adminRouter);
+app.use("/search", searchRouter);
+app.use("/host", hostRouter);
 
 //*Uncommend for ssl verification
 // app.use(express.static(__dirname, { dotfiles: 'allow' } ));
