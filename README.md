@@ -7,7 +7,7 @@
 
 > RESTful API built with node.js, express.js and MongoDB that exposes Airbnb data of Athens in the 2015-2016 time period. It uses JWT tokens encapsulated in cookies for authentication and provides endpoints for different roles (admins, hosts, simple users)
 
-### ✨ [Demo](https://airbnbapi.sidirope.info) (Sitting behind Nginx reverse proxy)
+### ✨Live api running on: https://airbnbapi.sidirope.info (Sitting behind Nginx reverse proxy)
 
 ## Author
 
