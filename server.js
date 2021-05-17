@@ -80,9 +80,9 @@ app.use("/host", hostRouter);
 https
   .createServer(
     {
-      key: fs.readFileSync("./certificates/example.key"),
-      cert: fs.readFileSync("./certificates/example.crt"),
-      dhparam: fs.readFileSync("./certificates/dhparam.pem"),
+      key: fs.readFileSync(process.env.KEYPATH),
+      cert: fs.readFileSync(process.env.FULLCHAIN),
+      dhparam: fs.readFileSync(process.env.DHPARAM),
       honorCipherOrder: true,
       ecdhCurve: "auto",
     },
