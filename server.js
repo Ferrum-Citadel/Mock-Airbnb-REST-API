@@ -41,17 +41,6 @@ mongoose
 const connection = mongoose.Connection;
 console.log("Mongodb ready state:" + mongoose.connection.readyState);
 
-//!For production deployment with react frontend set NODE_ENV = production, npm start build  and set port=5000 in the .env file
-if (process.env.NODE_ENV === "production") {
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, "../frontend/react-app/build"))); // Handle React routing, return all requests to React app
-  app.get("*", function (req, res) {
-    res.sendFile(
-      path.join(__dirname, "../frontend/react-app/build", "Index.html")
-    );
-  });
-}
-
 //Importing Passport js strategies
 require("./auth/passport");
 //Importing endpoints
@@ -71,6 +60,17 @@ app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/search", searchRouter);
 app.use("/host", hostRouter);
+
+//!For production deployment with react frontend set NODE_ENV = production, npm start build  and set port=5000 in the .env file
+if (process.env.NODE_ENV === "production") {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, "../frontend/react-app/build"))); // Handle React routing, return all requests to React app
+  app.get("*", function (req, res) {
+    res.sendFile(
+      path.join(__dirname, "../frontend/react-app/build", "Index.html")
+    );
+  });
+}
 
 //*Uncommend for ssl verification
 // app.use(express.static(__dirname, { dotfiles: 'allow' } ));
