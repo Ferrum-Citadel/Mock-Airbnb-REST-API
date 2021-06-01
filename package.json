@@ -31,6 +31,7 @@
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "sentiment": "^5.0.2"
+    "sentiment": "^5.0.2",
+    "swagger-ui-express": "^4.1.6"
   }
 }

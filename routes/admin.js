@@ -102,7 +102,7 @@ router.get("/pendinghosts", verifyToken, async (req, res) => {
 router.patch("/validatehost/:userID", verifyToken, async (req, res) => {
   try {
     const host = await UserModel.findById(req.params.userID).exec();
-    if (host && host.role === 2 && res.locals.role === 3) {
+    if (host && host.role === 2 && res.locals.token.role === 3) {
       if (host.pending === true) {
         await UserModel.findByIdAndUpdate(req.params.userID, {
           pending: false,

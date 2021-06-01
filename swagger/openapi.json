@@ -1,0 +1,776 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Mock-Airbnb-REST-API",
+    "description": "RESTful API built with node.js, express.js and MongoDB that exposes Airbnb data of Athens in the 2015-2016 time period. It uses JWT tokens encapsulated in cookies for authentication and provides endpoints for different roles (admins, hosts, simple users).",
+    "version": "1.0.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://spdx.org/licenses/MIT.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://airbnbapi.sidirope.info"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "jwtCookie"
+      }
+    }
+  },
+  "security": [
+    {
+      "cookieAuth": []
+    }
+  ],
+  "paths": {
+    "/admin/allusers/{format}": {
+      "get": {
+        "tags": ["admin"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "format",
+            "schema": {
+              "type": "string",
+              "enum": ["json", "xml"]
+            },
+            "required": true,
+            "description": "format of the results",
+            "example": "json"
+          }
+        ],
+        "description": "Retrieve all users in Json or XML format",
+        "responses": {
+          "200": {
+            "description": "successfull operation"
+          },
+          "400": {
+            "description": "invalid format specidied"
+          },
+          "403": {
+            "description": "No permission to access this resource"
+          },
+          "500": {
+            "description": "server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/login": {
+      "post": {
+        "tags": ["authentication"],
+        "description": "Login with username and password and get authorized for admin, host or renter endpoints",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "Simple renter account": {
+                  "value": "{\n    \"username\": \"rando\",\n    \"password\": \"rando12\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in successfully"
+          },
+          "400": {
+            "description": "Corrupt cookie"
+          },
+          "403": {
+            "description": "Wrong credentials"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/user/booking": {
+      "post": {
+        "tags": ["user"],
+        "description": "Creates a new booking for specific listing",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "listing_id": {
+                    "type": "string"
+                  },
+                  "dates": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "new booking": {
+                  "value": "{\n  \"listing_id\": \"5f5aa94f2db8e05a54188387\",\n  \"dates\": [\"2015-07-20\",\"2015-07-21\", \"2015-07-22\"]\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Auto generated using Swagger Inspector"
+          },
+          "400": {
+            "description": "Invalid listing id or unavailable dates"
+          },
+          "404": {
+            "description": "The booking already exists"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/logout": {
+      "post": {
+        "tags": ["authentication"],
+        "description": "User logout",
+        "responses": {
+          "303": {
+            "description": "Successfully logged out"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/search/neighbourhoods": {
+      "get": {
+        "tags": ["search"],
+        "description": "Get all unique neighbourhoods listed in the database",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Client error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/search": {
+      "post": {
+        "tags": ["search"],
+        "description": "Search the entire collection for listings matching the requirements",
+        "requestBody": {
+          "content": {
+            "application/json;charset=utf-8": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amenities": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "neighbourhood": {
+                    "type": "string"
+                  },
+                  "maxcost": {
+                    "type": "integer"
+                  },
+                  "guestNum": {
+                    "type": "integer"
+                  },
+                  "dates": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "type": {
+                    "type": "string"
+                  },
+                  "pageNum": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "examples": {
+                "Apartment in Kolonaki": {
+                  "value": "{\n    \"pageNum\": 1,\n    \"neighbourhood\": \"\u009a\u009f\u009b©\u009d\u0091\u009a\u0099\",\n    \"type\": \"Apartment\",\n    \"maxcost\": 250,\n    \"guestNum\": 2,\n    \"amenities\": [\"TV\", \"Wireless Internet\", \"Heating\"],\n    \"dates\": [\"2015-07-20\",\"2015-07-21\", \"2015-07-22\"]\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Found and returned results"
+          },
+          "400": {
+            "description": "Client errors"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/admin/validatehost/{hostID}": {
+      "patch": {
+        "tags": ["admin"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "hostID",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the host to be validated",
+            "example": "5e9dcc9e0d970d27fd97da52"
+          }
+        ],
+        "description": "Endpoint for admins to validate unvalidated hosts",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid format supplied"
+          },
+          "403": {
+            "description": "No permission to access this resource"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/user/info": {
+      "get": {
+        "tags": ["user"],
+        "description": "Returns the currently logged in user's information",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Unauthorized user"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/admin/allusers/json": {
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/user/{userID}": {
+      "get": {
+        "tags": ["user"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userID",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of the user",
+            "example": "60b6862b484f3c7bb5b68252"
+          }
+        ],
+        "description": "Returns the user information for given userID. If not an admin one can have access only to their own information",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "No permission to access this resource"
+          },
+          "404": {
+            "description": "No user with the given ID found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/user/review/{listingID}": {
+      "post": {
+        "tags": ["user"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "listingID",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "ID of listing that will be reviewed",
+            "example": "5f5aa94f2db8e05a54188387"
+          }
+        ],
+        "description": "Create a new review for the given listing",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comments": {
+                    "type": "string"
+                  },
+                  "rating": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "examples": {
+                "new review": {
+                  "value": "{\n    \"comments\": \"Very nice location, the kitchen is a bit small\",\n    \"rating\": 8\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A new review was created"
+          },
+          "404": {
+            "description": "No listing corresponds to the given listing ID"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/admin/listings/{format}": {
+      "get": {
+        "tags": ["admin"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "format",
+            "schema": {
+              "type": "string",
+              "enum": ["json", "xml"]
+            },
+            "required": true,
+            "description": "format of the results",
+            "example": "json"
+          }
+        ],
+        "description": "Return all listings in Json or XML format.",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid format supplied"
+          },
+          "403": {
+            "description": "No permission to access this resource"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/admin/listings/json": {
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/admin/pendinghosts": {
+      "get": {
+        "tags": ["admin"],
+        "description": "Retrieve all currently pending hosts",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid format supplied"
+          },
+          "403": {
+            "description": "No permission to access this resource"
+          },
+          "404": {
+            "description": "no pending host exists"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/search/property-type": {
+      "get": {
+        "tags": ["search"],
+        "description": "Get all unique property types listed in the database",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Client error"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/register": {
+      "post": {
+        "tags": ["authentication"],
+        "description": "Account registration for roles 2,3 (host or normal renter)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "phoneNumber": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "user_photo_url": {
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {
+                "Registration for normal renter": {
+                  "value": "{\n    \"username\": \"rando\",\n    \"password\" : \"rando12\",\n    \"email\": \"rando@gmail.com\",\n    \"phoneNumber\": \"6999999941\",\n    \"firstName\": \"Randi\",\n    \"lastName\" : \"Randivich\",\n    \"user_photo_url\" : \"http://rando.com\",\n    \"role\": \"3\"\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Auto generated using Swagger Inspector"
+          },
+          "400": {
+            "description": "Credentials in use"
+          }
+        },
+        "servers": [
+          {
+            "url": "https://airbnbapi.sidirope.info"
+          }
+        ]
+      },
+      "servers": [
+        {
+          "url": "https://airbnbapi.sidirope.info"
+        }
+      ]
+    },
+    "/host/newlisting": {
+      "put": {
+        "tags": ["host"],
+        "description": "Create new listing for connected and validated host",
+        "operationId": "https:/airbnbapi.sidirope.info/host/newlisting",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "encoding": {},
+              "schema": {
+                "required": [
+                  "images",
+                  "accommodates",
+                  "amenity_array[]",
+                  "bathrooms",
+                  "bed_type",
+                  "bedrooms",
+                  "beds",
+                  "city",
+                  "country",
+                  "description",
+                  "coordinates[]",
+                  "name",
+                  "neighbourhood",
+                  "price",
+                  "property_type",
+                  "square_meters",
+                  "street"
+                ],
+                "type": "object",
+                "properties": {
+                  "images": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "accommodates": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 3
+                  },
+                  "amenity_array[]": {
+                    "type": "string",
+                    "example": "TV"
+                  },
+                  "available_dates[]": {
+                    "type": "string"
+                  },
+                  "bathrooms": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 2
+                  },
+                  "bed_type": {
+                    "type": "string",
+                    "example": "Real Bed"
+                  },
+                  "bedrooms": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 1
+                  },
+                  "beds": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 1
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "Athens"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "Greece"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Airy, roomy and pleasant"
+                  },
+                  "coordinates[]": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 37.9717454636367
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "AkyrosVilla"
+                  },
+                  "neighbourhood": {
+                    "type": "string",
+                    "example": "ΚΟΥΚΑΚΙ-ΜΑΚΡΥΓΙΑΝΝΗ"
+                  },
+                  "price": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 30
+                  },
+                  "property_type": {
+                    "type": "string",
+                    "example": "Apartment"
+                  },
+                  "square_meters": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 64
+                  },
+                  "street": {
+                    "type": "string",
+                    "example": "Τριων Ιεραρχων"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "deprecated": false,
+        "servers": [
+          {
+            "url": "https:/airbnbapi.sidirope.info",
+            "variables": {}
+          }
+        ]
+      }
+    }
+  }
+}

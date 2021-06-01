@@ -10,6 +10,8 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const cookieEncrypter = require("cookie-encrypter");
 const mongoSanitize = require("express-mongo-sanitize");
+const swaggerUI = require("swagger-ui-express");
+const specs = require("./swagger/openapi.json");
 
 require("dotenv").config();
 const app = express();
@@ -60,6 +62,7 @@ app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/search", searchRouter);
 app.use("/host", hostRouter);
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 //!For production deployment with react frontend set NODE_ENV = production, npm start build  and set port=5000 in the .env file
 if (process.env.NODE_ENV === "production") {
